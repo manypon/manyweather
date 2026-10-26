@@ -1,4 +1,5 @@
-.list-page { min-height: 100%; padding: 32px 16px 118px; background: radial-gradient(circle at 50% 0%, rgba(40, 77, 139, .2), transparent 34%), var(--bg); }
+.list-page { position: absolute; inset: 0; height: 100%; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: none; padding: 32px 16px 118px; background: radial-gradient(circle at 50% 0%, rgba(40, 77, 139, .2), transparent 34%), var(--bg); }
+.list-page::-webkit-scrollbar { display: none; }
 .list-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 8px 6px 24px; }
 .list-header h1 { margin-top: 5px; font-size: 30px; font-weight: 600; letter-spacing: -.04em; }
 .list-header p:last-child { margin-top: 5px; color: var(--muted); font-size: 14px; }

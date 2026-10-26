@@ -34,9 +34,6 @@
     $('cityChevron').innerHTML = Icons.ui('chevronDown', 18);
     $('btnSearch').innerHTML = Icons.ui('search', 21);
     $('btnSettings').innerHTML = Icons.ui('gear', 21);
-    var more = 'Подробнее' + Icons.ui('chevronRight', 16);
-    $('moreDays').innerHTML = more;
-    $('moreHours').innerHTML = more;
     $('radarLabel').innerHTML = Icons.ui('map', 22) + '<span>Карта осадков</span><span class="arrow">' + Icons.ui('chevronRight', 18) + '</span>';
     $('nav').innerHTML = TABS.map(function (t, i) {
       return '<button type="button" class="tab' + (i === 0 ? ' active' : '') + '">' + Icons.ui(t.icon, 26) + '<span>' + t.label + '</span></button>';

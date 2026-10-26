@@ -169,8 +169,31 @@
     $('mapLocate').addEventListener('click', function () { offsetX = 0; offsetY = 0; drawMap(); });
     $('mapPlay').addEventListener('click', togglePlayback);
     document.querySelectorAll('.map-layer').forEach(function (button) { button.addEventListener('click', function () { setLayer(button.getAttribute('data-layer')); }); });
-    canvas.addEventListener('pointerdown', function (event) { pointer = { x: event.clientX, y: event.clientY, ox: offsetX, oy: offsetY }; canvas.setPointerCapture(event.pointerId); });
-    canvas.addEventListener('pointermove', function (event) { if (!pointer) return; offsetX = pointer.ox - (event.clientX - pointer.x); offsetY = pointer.oy - (event.clientY - pointer.y); drawMap(); });
+    canvas.addEventListener('pointerdown', function (event) {
+      if (event.pointerType === 'touch') {
+        pointer = { x: event.clientX, y: event.clientY, ox: offsetX, oy: offsetY, pending: true, id: event.pointerId };
+        return;
+      }
+      pointer = { x: event.clientX, y: event.clientY, ox: offsetX, oy: offsetY, pending: false, id: event.pointerId };
+      canvas.setPointerCapture(event.pointerId);
+    });
+    canvas.addEventListener('pointermove', function (event) {
+      if (!pointer || pointer.id !== event.pointerId) return;
+      var dx = event.clientX - pointer.x;
+      var dy = event.clientY - pointer.y;
+      if (pointer.pending) {
+        if (Math.abs(dy) > Math.abs(dx)) {
+          pointer = null;
+          return;
+        }
+        if (Math.abs(dx) < 4) return;
+        pointer.pending = false;
+        canvas.setPointerCapture(event.pointerId);
+      }
+      offsetX = pointer.ox - dx;
+      offsetY = pointer.oy - dy;
+      drawMap();
+    });
     canvas.addEventListener('pointerup', function () { pointer = null; });
     canvas.addEventListener('pointercancel', function () { pointer = null; });
     canvas.addEventListener('wheel', function (event) { event.preventDefault(); zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom + (event.deltaY < 0 ? 1 : -1))); offsetX = 0; offsetY = 0; drawMap(); }, { passive: false });

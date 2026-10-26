@@ -1,8 +1,15 @@
 .map-page {
-  min-height: 100%;
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
   padding: 22px 14px 118px;
   background: radial-gradient(circle at 50% 0%, rgba(40, 77, 139, .22), transparent 34%), var(--bg);
 }
+.map-page::-webkit-scrollbar { display: none; }
 
 .map-header { display: flex; align-items: flex-start; justify-content: space-between; padding: 10px 6px 20px; }
 .map-eyebrow { color: var(--accent); font-size: 10px; font-weight: 700; letter-spacing: .14em; }
@@ -11,7 +18,7 @@
 .map-locate { color: var(--accent); }
 .map-locate .ico { width: 20px; height: 20px; }
 .map-frame { position: relative; height: min(66vh, 520px); min-height: 390px; overflow: hidden; border: 1px solid var(--line); border-radius: 24px; background: #e3e6e3; box-shadow: 0 18px 45px rgba(0, 0, 0, .28); }
-.map-canvas { position: absolute; inset: 0; overflow: hidden; cursor: grab; touch-action: none; background: #e3e6e3; }
+.map-canvas { position: absolute; inset: 0; overflow: hidden; cursor: grab; touch-action: pan-y; background: #e3e6e3; }
 .map-canvas:active { cursor: grabbing; }
 .map-raster { position: absolute; width: 256px; height: 256px; max-width: none; user-select: none; pointer-events: none; }
 .radar-raster { opacity: .72; mix-blend-mode: multiply; }
