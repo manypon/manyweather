@@ -1,0 +1,35 @@
+.toast {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(20, 28, 54, 0.96);
+  font-size: 14px;
+  line-height: 1.35;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+}
+
+.toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+}
+
+.toast button {
+  flex: none;
+  padding: 4px 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7ea2f5;
+}

@@ -1,0 +1,149 @@
+.top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 18px 0;
+}
+
+.city {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.pin,
+.round {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(15, 22, 44, 0.78);
+  border: 1px solid var(--line);
+  color: #dfe7ff;
+}
+
+.pin {
+  color: #e9eeff;
+}
+
+.city-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.city-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.city-name .ico {
+  color: #9fb4ff;
+}
+
+.country {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.hero {
+  position: relative;
+  height: 262px;
+  margin-top: -2px;
+}
+
+.hero-bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  contain: paint;
+}
+
+.hero-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% 50%;
+  transform: translate3d(-1.5%, 0, 0) scale(1.04);
+  will-change: transform, opacity;
+  transition: opacity 0.25s ease;
+  animation: drift 30s ease-in-out infinite alternate;
+}
+
+.hero-bg img.is-swap {
+  opacity: 0;
+}
+
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, var(--bg) 0, rgba(6, 10, 21, 0) 30%, rgba(6, 10, 21, 0) 64%, var(--bg) 100%),
+    linear-gradient(to right, var(--bg) 0, rgba(6, 10, 21, 0) 9%, rgba(6, 10, 21, 0) 91%, var(--bg) 100%),
+    linear-gradient(to right, rgba(6, 10, 21, 0.62) 0, rgba(6, 10, 21, 0) 62%);
+}
+
+.hero-info {
+  position: absolute;
+  left: 20px;
+  bottom: 26px;
+  z-index: 2;
+}
+
+.screen.is-loading .hero-info,
+.screen.is-loading .card {
+  opacity: 0.55;
+}
+
+.hero-info,
+.card {
+  transition: opacity 0.3s ease;
+}
+
+.temp {
+  font-size: 96px;
+  line-height: 0.95;
+  font-weight: 200;
+  letter-spacing: -0.04em;
+  text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45);
+}
+
+.cond {
+  margin-top: 8px;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.feels {
+  margin-top: 5px;
+  font-size: 16px;
+  color: var(--feels);
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(-1.5%, 0, 0) scale(1.04);
+  }
+  to {
+    transform: translate3d(1.5%, 0, 0) scale(1.04);
+  }
+}

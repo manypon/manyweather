@@ -1,0 +1,20 @@
+.more-page { height: 100%; overflow-y: auto; padding: 32px 16px 118px; background: radial-gradient(circle at 50% 0%, rgba(40, 77, 139, .2), transparent 34%), var(--bg); }
+.more-page .list-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 8px 6px 24px; }
+.more-page .list-header h1 { margin-top: 5px; font-size: 30px; font-weight: 600; letter-spacing: -.04em; }
+.more-page .list-header p:last-child { margin-top: 5px; color: var(--muted); font-size: 14px; }
+.settings-group { margin-bottom: 16px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 19px; background: rgba(13, 19, 37, .72); }
+.settings-group h2 { margin: 12px 4px 10px; color: #aebcdf; font-size: 13px; font-weight: 600; }
+.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 62px; padding: 9px 4px; border-top: 1px solid rgba(130, 150, 210, .12); }
+.setting-row:first-of-type { border-top: 0; }
+.setting-row strong, .setting-action strong { display: block; color: var(--text); font-size: 15px; font-weight: 600; }
+.setting-row small, .setting-action small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+.segmented { display: flex; gap: 4px; padding: 3px; border: 1px solid rgba(130, 150, 210, .16); border-radius: 13px; background: rgba(6, 12, 26, .55); }
+.segmented button { min-width: 52px; padding: 7px 10px; border-radius: 10px; color: #93a5cd; font-size: 12px; }
+.segmented button.active { color: #eaf1ff; background: rgba(79, 140, 255, .2); }
+.setting-action { display: flex; align-items: center; gap: 13px; width: 100%; min-height: 62px; padding: 9px 4px; border-top: 1px solid rgba(130, 150, 210, .12); text-align: left; }
+.setting-action:first-of-type { border-top: 0; }
+.setting-symbol { display: grid; place-items: center; flex: none; width: 34px; height: 34px; border-radius: 50%; color: #b9c9f2; background: rgba(79, 140, 255, .12); font-size: 19px; }
+.setting-action > span:last-child { flex: none; color: #7f92bd; font-size: 22px; }
+.about-group p { margin: 8px 4px 6px; color: var(--text); font-size: 14px; line-height: 1.55; }
+.about-group span { display: block; margin: 0 4px 14px; color: #68779c; font-size: 12px; }
+@media (max-width: 380px) { .more-page { padding-left: 12px; padding-right: 12px; } .segmented button { min-width: 44px; padding: 7px 7px; } }

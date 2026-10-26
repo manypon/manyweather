@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060a15">
+<title>Погода</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/cards.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/search.css">
+<link rel="stylesheet" href="css/toast.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="css/map.css">
+<link rel="stylesheet" href="css/lists.css">
+<link rel="stylesheet" href="css/more.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="gSun" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#fff3a8"/>
+      <stop offset=".6" stop-color="#ffc933"/>
+      <stop offset="1" stop-color="#ff9f1a"/>
+    </radialGradient>
+    <linearGradient id="gCloud" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f8ff"/>
+      <stop offset="1" stop-color="#a9b5dc"/>
+    </linearGradient>
+    <linearGradient id="gMoon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f8ff"/>
+      <stop offset="1" stop-color="#aebae6"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<main class="app">
+  <div class="screen" id="screen">
+    <header class="top">
+      <button class="city" type="button" id="btnCity" aria-label="Выбрать город">
+        <span class="pin" id="pin"></span>
+        <span class="city-text">
+          <span class="city-name"><span id="cityName"></span><span id="cityChevron"></span></span>
+          <span class="country" id="country"></span>
+        </span>
+      </button>
+      <div class="actions">
+        <button class="round" type="button" id="btnSearch" aria-label="Поиск города"></button>
+        <button class="round" type="button" id="btnSettings" aria-label="Настройки"></button>
+      </div>
+    </header>
+
+    <section class="hero" id="hero">
+      <div class="hero-bg"><img id="heroImg" alt=""></div>
+      <div class="hero-info">
+        <div class="temp" id="temp"></div>
+        <div class="cond" id="cond"></div>
+        <div class="feels" id="feels"></div>
+      </div>
+    </section>
+
+    <section class="card stats" id="stats"></section>
+
+    <section class="card">
+      <div class="card-head"><h2>Прогноз на 7 дней</h2><button type="button" class="more" id="moreDays"></button></div>
+      <div class="days" id="days"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Почасовой прогноз</h2><button type="button" class="more" id="moreHours"></button></div>
+      <div class="hours" id="hours"></div>
+    </section>
+
+    <button class="card radar" type="button" id="radar">
+      <span class="radar-label" id="radarLabel"></span>
+      <span class="radar-thumb"></span>
+    </button>
+  </div>
+
+  <section class="map-page" id="mapPage" aria-label="Карта осадков" hidden>
+    <header class="map-header">
+      <div>
+        <p class="map-eyebrow">ПОГОДА СЕЙЧАС</p>
+        <h1>Карта осадков</h1>
+        <p class="map-location" id="mapLocation">Варшава, Польша</p>
+      </div>
+      <button class="round map-locate" id="mapLocate" type="button" aria-label="Показать выбранный город"></button>
+    </header>
+    <div class="map-frame">
+      <div class="map-canvas" id="weatherMap" aria-label="Интерактивная карта погоды"></div>
+      <div class="map-overlay map-status" id="mapStatus">Загружаем радар осадков…</div>
+      <button class="map-overlay map-play" id="mapPlay" type="button" aria-label="Запустить анимацию радара">▶</button>
+      <div class="map-overlay map-legend"><span></span><small>Интенсивность осадков</small></div>
+    </div>
+    <div class="map-forecast" id="mapForecast" hidden></div>
+    <div class="map-controls">
+      <button class="map-layer active" data-layer="precipitation" type="button">Радар</button>
+      <button class="map-layer" data-layer="forecast" type="button">Прогноз</button>
+    </div>
+    <p class="map-attribution">Радар: RainViewer · Карта: OpenStreetMap</p>
+  </section>
+
+  <section class="list-page" id="historyPage" hidden aria-label="История городов">
+    <header class="list-header">
+      <p class="map-eyebrow">ВАШИ ГОРОДА</p>
+      <h1>История</h1>
+      <p>Недавно просмотренные места</p>
+    </header>
+    <div class="city-list" id="historyList"></div>
+  </section>
+
+  <section class="list-page" id="favoritesPage" hidden aria-label="Избранные города">
+    <header class="list-header">
+      <div>
+        <p class="map-eyebrow">БЫСТРЫЙ ДОСТУП</p>
+        <h1>Избранное</h1>
+        <p>Сохранённые города</p>
+      </div>
+      <button class="favorite-add" id="addFavorite" type="button">+ Текущий город</button>
+    </header>
+    <div class="city-list" id="favoritesList"></div>
+  </section>
+
+  <section class="more-page" id="morePage" hidden aria-label="Ещё">
+    <header class="list-header">
+      <div>
+        <p class="map-eyebrow">НАСТРОЙКИ</p>
+        <h1>Ещё</h1>
+        <p>Настройте приложение под себя</p>
+      </div>
+    </header>
+
+    <section class="settings-group">
+      <h2>Отображение</h2>
+      <div class="setting-row">
+        <div><strong>Единицы температуры</strong><small>Как показывать температуру</small></div>
+        <div class="segmented" id="temperatureUnit">
+          <button type="button" data-unit="c">°C</button>
+          <button type="button" data-unit="f">°F</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div><strong>Скорость ветра</strong><small>Единицы измерения ветра</small></div>
+        <div class="segmented" id="windUnit">
+          <button type="button" data-wind="kmh">км/ч</button>
+          <button type="button" data-wind="ms">м/с</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="settings-group">
+      <h2>Данные</h2>
+      <button class="setting-action" id="settingsLocation" type="button">
+        <span class="setting-symbol">⌖</span>
+        <span><strong>Моё местоположение</strong><small>Определить город по GPS</small></span>
+        <span>›</span>
+      </button>
+      <button class="setting-action" id="settingsRefresh" type="button">
+        <span class="setting-symbol">↻</span>
+        <span><strong>Обновить погоду</strong><small>Запросить свежие данные</small></span>
+        <span>›</span>
+      </button>
+    </section>
+
+    <section class="settings-group about-group">
+      <h2>О приложении</h2>
+      <p>Данные прогноза — Open-Meteo<br>Радар осадков — RainViewer</p>
+      <span>Версия 1.0.0 · Telegram Mini App</span>
+    </section>
+  </section>
+
+  <nav class="nav" id="nav" aria-label="Основная навигация"></nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span id="toastText"></span>
+    <button type="button" id="toastAction" hidden>Повторить</button>
+  </div>
+
+  <section class="sheet" id="sheet" aria-hidden="true" aria-label="Выбор города">
+    <div class="sheet-head">
+      <button class="round" type="button" id="sheetBack" aria-label="Закрыть"></button>
+      <input class="sheet-input" id="q" type="search" placeholder="Город" autocomplete="off" autocapitalize="words" spellcheck="false" aria-label="Название города">
+    </div>
+    <button class="locate" type="button" id="btnLocate">
+      <span id="locateIcon"></span>
+      <span>Моё местоположение</span>
+    </button>
+    <p class="sheet-note" id="sheetNote" hidden></p>
+    <h3 class="sheet-title" id="resultsTitle" hidden></h3>
+    <ul class="results" id="results"></ul>
+  </section>
+</main>
+
+<script async src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/map.js"></script>
+<script src="js/conditions.js"></script>
+<script src="js/store.js"></script>
+<script src="js/api.js"></script>
+<script src="js/model.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/search.js"></script>
+<script src="js/lists.js"></script>
+<script src="js/more.js"></script>
+<script src="js/telegram.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
